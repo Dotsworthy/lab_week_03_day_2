@@ -5,7 +5,7 @@ class Property
   attr_accessor :address, :value, :num_of_bedrooms, :yr_build
 
   def initialize(options)
-    @id = options["id"].to_i()
+    @id = options["id"]
     @address = options["address"]
     @value = options["value"].to_i()
     @num_of_bedrooms = options["num_of_bedrooms"].to_i()
@@ -81,13 +81,14 @@ class Property
       dbname: "property_tracker",
       host: "localhost"
       })
-      sql = "SELECT FROM property_tracker WHERE id = $1"
+      sql = "SELECT * FROM property_tracker WHERE id = $1"
       values = [search_id]
       db.prepare("find",sql)
       found_property = db.exec_prepared("find", values)
       db.close()
-      return found_property
-      # return found_property.map{|ids| Property.new(ids)}
+      # return found_property.
+      # return Property.new(found_property)
+      return found_property.map{|ids| Property.new(ids)}
     end
 
   def Property.find_by_address(search_address)
@@ -95,14 +96,11 @@ class Property
       dbname: "property_tracker",
       host: "localhost"
       })
-      sql = "SELECT FROM property_tracker WHERE address = $1"
+      sql = "SELECT * FROM property_tracker WHERE address = $1"
       values = [search_address]
       db.prepare("find_by_address",sql)
       found_property = db.exec_prepared("find_by_address", values)
       db.close()
-      if found_property != nil
-        return found_property
-      else p nil
-    end
+      return found_property.map{|ids| Property.new(ids)}
   end
 end
