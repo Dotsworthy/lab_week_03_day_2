@@ -86,7 +86,8 @@ class Property
       db.prepare("find",sql)
       found_property = db.exec_prepared("find", values)
       db.close()
-      return found_property[0]
+      return found_property
+      # return found_property.map{|ids| Property.new(ids)}
     end
 
   def Property.find_by_address(search_address)
@@ -101,7 +102,7 @@ class Property
       db.close()
       if found_property != nil
         return found_property
-      else return nil
+      else p nil
     end
   end
 end
